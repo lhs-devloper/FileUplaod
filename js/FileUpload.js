@@ -1,10 +1,14 @@
 class FileUpload {
+    #targetTagId;
+    #expressionTag;
+    #previousFileArrays;
+    #createTag;
     constructor(targetTagId, expressionTag, createTag) {
-        this.targetTagId = document.getElementById(targetTagId);
-        this.expressionTag = document.getElementById(expressionTag);
-        this.createTag = createTag;
-        this.targetTagId.addEventListener("change", this.getFileList.bind(this));
-        this.previousFileArrays = [];
+        this.#targetTagId = document.getElementById(targetTagId);
+        this.#expressionTag = document.getElementById(expressionTag);
+        this.#createTag = createTag;
+        this.#targetTagId.addEventListener("change", this.getFileList.bind(this));
+        this.#previousFileArrays = [];
     }
     getFileList() {
 
@@ -15,10 +19,9 @@ class FileUpload {
                 this.classList.toggle("selectFile");
             }
             this.expressionTag.append(createElementTag);
-            this.previousFileArrays.push(file);
+            this.#previousFileArrays.push(file);
         }
-        this.targetTagId.files = this.getTransferFileList(this.previousFileArrays);
-        console.log(this.targetTagId.files)
+        this.#targetTagId.files = this.getTransferFileList(this.previousFileArrays);
     }
     // 파일 삭제
     deleteFile() {
@@ -43,16 +46,37 @@ class FileUpload {
             delete arrayFileList[num];
         }
         arrayFileList = arrayFileList.filter((element) => element !== undefined);
-        this.previousFileArrays = arrayFileList;
+        this.#previousFileArrays = arrayFileList;
 
-        this.targetTagId.files = this.getTransferFileList(this.previousFileArrays);
+        this.#targetTagId.files = this.getTransferFileList(this.previousFileArrays);
     }
-
+    // 배열들 파일리스트로 재 변환
     getTransferFileList(fileArray) {
         const list = new DataTransfer();
         fileArray.forEach((file) => {
             list.items.add(file);
         })
         return list.files;
+    }
+
+    setFileList(fileList) {
+        const returnFileList = [];
+        if (fileList[0] instanceof FileInfo) {
+            return null;
+        }
+        blobList.forEach((fileInfo) => {
+            const file = new File([fileInfo.blob], file.fileName, file.mimeType);
+            returnFileList.push(file)
+        })
+        this.#previousFileArrays = returnFileList;
+        this.#targetTagId.files = this.getTransferFileList(this.previousFileArrays);
+    }
+}
+
+class FileInfo {
+    constructor(blob, fileName, mimeType) {
+        this.blob = blob;
+        this.fileName = fileName;
+        this.mimeType = mimeType;
     }
 }

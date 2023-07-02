@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="multi[]" multiple accept="image/*">
+    <div id="expr"></div>
+    <button type="button" onclick="deleteFile(); return false;">삭제</button>
+</body>
+</html>
+<script>
+    const fileUpload = new FileUpload("multi[]", "expr", "p");
+    function deleteFile(){
+        fileUpload.deleteFile();
+    }
+    const urlList = [];
+    
+    const fileList = [];
+    urlList.forEach((url) => {
+        fetch(url)
+        .then(async (response)=>{
+            const file = await response.blob();
+            const ext = file.split(".").pop();
+            const metadata = {
+                type: `image/${ext}`
+            }
+        })
+        
+    })
+</script>
