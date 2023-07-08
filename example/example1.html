@@ -13,13 +13,14 @@
     </style>
 </head>
 <body>
-    <form method="post" enctype="multipart/form-data">
+    <!-- action url은 node-js 초점에 맞춰 진행(곧 php로 바뀔 예정)  -->
+    <form method="post" enctype="multipart/form-data" action="http://localhost:8080/enroll">
         <!-- 형식에 맞춰서 알아서 잘 쓸것 -->
         <!-- ex) accept = image/*, .pdf etc... -->
         <!-- 필요한 태그들 -->
         <!-- input[type=file] 필수 -->
         <!-- 표현할 div나 td태그에 표현-->
-        <input type="file" id="multi[]" multiple>
+        <input type="file" name="files" id="multi[]" multiple>
         <div id="expr"></div>
         <button type="button" onclick="deleteFile(); return false;">삭제</button>
     </form>
