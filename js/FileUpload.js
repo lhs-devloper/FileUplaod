@@ -12,22 +12,22 @@ class FileUpload {
     }
     getFileList() {
 
-        for (let file of this.targetTagId.files) {
-            const createElementTag = document.createElement(this.createTag);
+        for (let file of this.#targetTagId.files) {
+            const createElementTag = document.createElement(this.#createTag);
             createElementTag.textContent = file.name;
             createElementTag.onclick = function () {
                 this.classList.toggle("selectFile");
             }
-            this.expressionTag.append(createElementTag);
+            this.#expressionTag.append(createElementTag);
             this.#previousFileArrays.push(file);
         }
-        this.#targetTagId.files = this.getTransferFileList(this.previousFileArrays);
+        this.#targetTagId.files = this.getTransferFileList(this.#previousFileArrays);
     }
     // 파일 삭제
     deleteFile() {
         let count = 0;
         let targetCountNumList = [];
-        const allElements = this.expressionTag.querySelectorAll(this.createTag);
+        const allElements = this.#expressionTag.querySelectorAll(this.#createTag);
         for (let elements of allElements) {
             if (elements.classList.contains("selectFile")) {
                 setTimeout(() => {
@@ -41,14 +41,14 @@ class FileUpload {
     }
     // 삭제 후 파일정보 재정의
     deleteFileInfo(targetNum) {
-        let arrayFileList = [...this.previousFileArrays];
+        let arrayFileList = [...this.#previousFileArrays];
         for (let num of targetNum) {
             delete arrayFileList[num];
         }
         arrayFileList = arrayFileList.filter((element) => element !== undefined);
         this.#previousFileArrays = arrayFileList;
 
-        this.#targetTagId.files = this.getTransferFileList(this.previousFileArrays);
+        this.#targetTagId.files = this.getTransferFileList(this.#previousFileArrays);
     }
     // 배열들 파일리스트로 재 변환
     getTransferFileList(fileArray) {
@@ -69,7 +69,7 @@ class FileUpload {
             returnFileList.push(file)
         })
         this.#previousFileArrays = returnFileList;
-        this.#targetTagId.files = this.getTransferFileList(this.previousFileArrays);
+        this.#targetTagId.files = this.getTransferFileList(this.#previousFileArrays);
     }
 }
 
